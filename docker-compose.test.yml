@@ -4,8 +4,8 @@ services:
   localstack:
     image: localstack/localstack
     ports:
-      - "4566:4566"  # Localstack API Gateway
-      - "4510:4510"  # Localstack DynamoDB
+      - "4566:4566"
+      - "4510:4510"
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
@@ -14,7 +14,9 @@ services:
       - localstack-net
 
   flask:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     depends_on:
@@ -23,11 +25,9 @@ services:
       - localstack-net
 
   test:
-    image: python:3.9
-    volumes:
-      - .:/app
-    working_dir: /app
-    entrypoint: ["sh", "-c", "./test_script.sh"]
+    build:
+      context: .
+      dockerfile: Dockerfile.test
     depends_on:
       - localstack
       - flask
@@ -37,3 +37,5 @@ services:
 networks:
   localstack-net:
     driver: bridge
+
+
