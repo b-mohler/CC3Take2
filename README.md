@@ -1,5 +1,5 @@
 # Assignment 3
-The final step in this project was to improve on the work done in step 2 by upgrading the functions to create, read, update, and destroy items by incorporating DynamoDB table and an S3 bucket, developing more robust testing measures, and then using Localstack to run a mock of AWS as part of the application stack.
+The final step in this project was to improve on the work done in step 2 by upgrading the functions to create, read, update, and destroy items by incorporating DynamoDB table and an S3 bucket, developing more robust testing measures, and then using Localstack to run a mock of AWS as part of the application stack. ChatGPT was queried to help create this repo, it was initially fed an abbreviated version of the instructions for the assignment and then used to explain error messages and help provide solutions as problems arose. 
 
 ## The Workflow
 The workflow file is test.yml. It runs automatically when pushes or pull requests are made to the main branch and can also be triggered manually from the actions tab. It will checkout the code, set up python, install docker compose, install the dependencies, make the shell files executable, build and run stack, and then run the tests. 
