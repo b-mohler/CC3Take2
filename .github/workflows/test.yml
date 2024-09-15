@@ -1,0 +1,45 @@
+name: Test Flask Application
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to your default branch name
+  pull_request:
+    branches:
+      - main  # Adjust this to your default branch name
+  workflow_dispatch:  # Allows manual trigger from the GitHub Actions interface
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:20.10.7
+        options: --privileged
+        ports:
+          - 4566:4566  # Localstack API Gateway
+          - 4510:4510  # Localstack DynamoDB
+        ports:
+          - 5000:5000  # Flask application port
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest boto3 requests
+
+    - name: Run tests
+      run: docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+
+    - name: Clean up
+      if: always()
+      run: docker-compose down
