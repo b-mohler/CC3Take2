@@ -9,3 +9,5 @@ echo "Stack is running. Press [CTRL+C] to stop."
 # Wait for the user to stop the services
 trap 'docker-compose down' SIGINT
 wait
+
+chmod +x start_stack.sh
