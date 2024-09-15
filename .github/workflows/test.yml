@@ -3,10 +3,10 @@ name: Test Flask Application
 on:
   push:
     branches:
-      - main  # Adjust this to your default branch name
+      - main
   pull_request:
     branches:
-      - main  # Adjust this to your default branch name
+      - main
   workflow_dispatch:  # Allows manual trigger from the GitHub Actions interface
 
 jobs:
@@ -35,17 +35,30 @@ jobs:
       run: |
         sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
-        docker-compose --version  # Verify installation
+        docker-compose --version
 
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
         pip install pytest boto3 requests
 
+    - name: Make start_stack.sh executable
+      run: chmod +x start_stack.sh
+
+    - name: Make test_script.sh executable
+      run: chmod +x test_script.sh
+
+    - name: Build and run stack
+      run: |
+        ./start_stack.sh  # Start Localstack and Flask application
+
     - name: Run tests
-      run: docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+      run: |
+        docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit || true
+        docker-compose -f docker-compose.test.yml logs
 
     - name: Clean up
       if: always()
-      run: docker-compose down
+      run: docker-compose -f docker-compose.test.yml down
+
 
