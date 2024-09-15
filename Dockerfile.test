@@ -1,0 +1,19 @@
+# Use a Python base image
+FROM python:3.9-slim
+
+# Set environment variables to ensure Python output is sent straight to the terminal
+ENV PYTHONUNBUFFERED=1
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+RUN pip install pytest boto3 requests
+
+# Copy the application code and test files into the container
+COPY . .
+
+# Set the entrypoint to the test script
+ENTRYPOINT ["sh", "test_script.sh"]
