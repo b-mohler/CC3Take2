@@ -8,6 +8,10 @@ BASE_URL = 'http://localhost:5000/items'
 DYNAMODB_TABLE_NAME = 'ItemsTable'
 S3_BUCKET_NAME = 'items-bucket'
 
+os.environ['AWS_ACCESS_KEY_ID'] = 'dummy'
+os.environ['AWS_SECRET_ACCESS_KEY'] = 'dummy'
+os.environ['AWS_SESSION_TOKEN'] = 'dummy'
+
 # Initialize DynamoDB and S3 clients
 dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:4566', region_name = 'us-east-1')
 s3 = boto3.client('s3', endpoint_url='http://localhost:4566', region_name = 'us-east-1')
