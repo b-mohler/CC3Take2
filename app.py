@@ -6,8 +6,8 @@ import os
 app = Flask(__name__)
 
 # Configure DynamoDB and S3
-dynamodb = boto3.resource('dynamodb', endpoint_url='http://localstack:4566')
-s3 = boto3.client('s3', endpoint_url='http://localstack:4566')
+dynamodb = boto3.resource('dynamodb', endpoint_url='http://localstack:4566', region='us-east-1')
+s3 = boto3.client('s3', endpoint_url='http://localstack:4566', region='us-east-1')
 
 # Set up table and bucket names
 TABLE_NAME = 'ItemsTable'
